@@ -3,454 +3,387 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AP Course Progress Dashboard | Alpha School</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>AP Progress Dashboard - March 19, 2026</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f8f9fa;
-      color: #1a1a1a;
-      line-height: 1.5;
-      padding: 2rem;
-    }
-    .container { max-width: 1700px; margin: 0 auto; }
-    header { margin-bottom: 2rem; }
-    h1 { font-size: 1.75rem; font-weight: 600; color: #111; margin-bottom: 0.25rem; }
-    .subtitle { font-size: 0.875rem; color: #666; }
-    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
-    .metric-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 1rem;
-      border: 1px solid #e5e7eb;
-    }
-    .metric-label { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
-    .metric-value { font-size: 1.4rem; font-weight: 600; color: #111; }
-    .filters {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    select, button {
-      font-family: inherit;
-      font-size: 0.875rem;
-      padding: 0.5rem 0.875rem;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      background: #fff;
-      cursor: pointer;
-    }
-    select:hover, button:hover { border-color: #9ca3af; }
-    button { background: #f9fafb; }
-    .table-container {
-      background: #fff;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      overflow: hidden;
-    }
-    .table-scroll { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
-    th {
-      text-align: left;
-      padding: 0.625rem 0.5rem;
-      font-weight: 500;
-      color: #666;
-      background: #f9fafb;
-      border-bottom: 1px solid #e5e7eb;
-      cursor: pointer;
-      user-select: none;
-      white-space: nowrap;
-      position: sticky;
-      top: 0;
-    }
-    th:hover { background: #f3f4f6; }
-    th.sorted { color: #111; }
-    td { padding: 0.5rem; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover { background: #fafbfc; }
-    .student-name { font-weight: 500; color: #111; white-space: nowrap; }
-    .course { color: #444; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .num { text-align: right; font-variant-numeric: tabular-nums; }
-    .progress-cell { min-width: 130px; }
-    .progress-bar { display: flex; align-items: center; gap: 0.375rem; }
-    .progress-track { flex: 1; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 3px; }
-    .progress-value { font-weight: 500; font-size: 0.7rem; min-width: 38px; text-align: right; }
-    .score { font-weight: 500; }
-    .score-high { color: #0f766e; }
-    .score-good { color: #0d9488; }
-    .score-mid { color: #b45309; }
-    .score-low { color: #c2410c; }
-    .score-concern { color: #b91c1c; }
-    .score-none { color: #ccc; }
-    .fill-complete { background: #0d9488; }
-    .fill-ontrack { background: #14b8a6; }
-    .fill-progress { background: #f59e0b; }
-    .fill-behind { background: #ea580c; }
-    .fill-atrisk { background: #dc2626; }
-    .proj-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-    .proj-5 { background: #059669; color: #fff; }
-    .proj-4 { background: #0d9488; color: #fff; }
-    .proj-3 { background: #f59e0b; color: #fff; }
-    .proj-2 { background: #ea580c; color: #fff; }
-    .proj-1 { background: #dc2626; color: #fff; }
-    .proj-none { background: #e5e7eb; color: #999; }
-    .delta { font-size: 0.65rem; font-weight: 500; margin-left: 4px; }
-    .delta-up { color: #059669; }
-    .delta-down { color: #dc2626; }
-    .delta-none { color: #9ca3af; }
-    .big-mover { background: #ecfdf5 !important; }
-    .empty-state { padding: 3rem; text-align: center; color: #888; }
-    .data-date { font-size: 0.75rem; color: #999; margin-top: 1rem; text-align: right; }
-    .legend { font-size: 0.7rem; color: #888; margin-top: 0.5rem; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; padding: 20px; }
+    .container { max-width: 1400px; margin: 0 auto; }
+    h1 { font-size: 1.8rem; margin-bottom: 5px; color: #1a1a2e; }
+    .subtitle { color: #666; margin-bottom: 20px; font-size: 0.9rem; }
+    
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    .metric { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .metric-value { font-size: 1.8rem; font-weight: 700; color: #1a1a2e; }
+    .metric-label { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+    .metric-value.green { color: #16a34a; }
+    .metric-value.red { color: #dc2626; }
+    .metric-value.blue { color: #2563eb; }
+    
+    .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; align-items: center; }
+    .filter-btn { padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .filter-btn:hover { background: #f0f0f0; }
+    .filter-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+    select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.85rem; background: white; }
+    
+    .table-wrapper { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th { background: #1a1a2e; color: white; padding: 12px 10px; text-align: left; font-weight: 600; position: sticky; top: 0; cursor: pointer; white-space: nowrap; }
+    th:hover { background: #2a2a4e; }
+    td { padding: 10px; border-bottom: 1px solid #eee; }
+    tr:hover { background: #f8f8f8; }
+    tr.big-mover { background: #dcfce7; }
+    tr.big-mover:hover { background: #bbf7d0; }
+    tr.accuracy-drop { background: #fef2f2; }
+    tr.accuracy-drop:hover { background: #fee2e2; }
+    
+    .delta { font-size: 0.75rem; font-weight: 600; }
+    .delta.positive { color: #16a34a; }
+    .delta.negative { color: #dc2626; }
+    .delta.neutral { color: #666; }
+    
+    .score { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+    .score.high { background: #dcfce7; color: #166534; }
+    .score.mid { background: #fef9c3; color: #854d0e; }
+    .score.low { background: #fee2e2; color: #991b1b; }
+    
+    .progress-bar { width: 60px; height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 8px; }
+    .progress-fill { height: 100%; border-radius: 4px; }
+    .progress-fill.high { background: #16a34a; }
+    .progress-fill.mid { background: #eab308; }
+    .progress-fill.low { background: #dc2626; }
+    
+    .badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 0.7rem; font-weight: 600; margin-left: 5px; }
+    .badge.complete { background: #dcfce7; color: #166534; }
+    
+    .legend { display: flex; gap: 20px; margin-bottom: 15px; font-size: 0.8rem; }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+    .legend-color.green { background: #dcfce7; }
+    .legend-color.red { background: #fef2f2; }
+    
     @media (max-width: 768px) {
-      body { padding: 1rem; }
       .metrics { grid-template-columns: repeat(2, 1fr); }
-      table { min-width: 1000px; }
+      .filters { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>AP course progress</h1>
-      <p class="subtitle" id="date-display"></p>
-    </header>
+    <h1>📊 AP Progress Dashboard</h1>
+    <p class="subtitle">Day-over-day comparison: March 18 → March 19, 2026</p>
+    
     <div class="metrics" id="metrics"></div>
-    <div class="filters" id="filters"></div>
-    <div class="table-container">
-      <div class="table-scroll">
-        <table>
-          <thead id="table-head"></thead>
-          <tbody id="table-body"></tbody>
-        </table>
-      </div>
-      <div class="empty-state" id="empty-state" style="display:none;">No students match the current filters.</div>
+    
+    <div class="legend">
+      <div class="legend-item"><div class="legend-color green"></div> Big progress mover (≥5%)</div>
+      <div class="legend-item"><div class="legend-color red"></div> Accuracy dropped (≥2%)</div>
     </div>
-    <p class="data-date">Data: March 19, 2026 vs March 18, 2026 | Source: Phase 3 Tracker</p>
-    <p class="legend">Δ = Change from yesterday | Proj = Projected AP Score (1-5) | Green rows = Big movers (+5% or more)</p>
+    
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All Students</button>
+      <button class="filter-btn" data-filter="movers">Big Movers (≥5%)</button>
+      <button class="filter-btn" data-filter="accuracy-up">Accuracy Up</button>
+      <button class="filter-btn" data-filter="accuracy-down">Accuracy Down</button>
+      <button class="filter-btn" data-filter="complete">100% Complete</button>
+      <select id="courseFilter">
+        <option value="">All Courses</option>
+      </select>
+    </div>
+    
+    <div class="table-wrapper">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th data-sort="student">Student</th>
+            <th data-sort="course">Course</th>
+            <th data-sort="progress">Progress</th>
+            <th data-sort="progress_delta">Δ Prog</th>
+            <th data-sort="accuracy">Accuracy</th>
+            <th data-sort="accuracy_delta">Δ Acc</th>
+            <th data-sort="mcq">MCQ</th>
+            <th data-sort="frq">FRQ</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
   </div>
 
 <script>
-// Data with yesterday (y) and today (t) values
-const RAW_DATA = [
-  {"name":"Adrienne Laswell","course":"Human Geography","progress":89,"yesterday":85.9,"accuracy":80.2,"mcq":75.8,"frq":62,"proj":4},
-  {"name":"Aheli Shah","course":"Human Geography","progress":89,"yesterday":89,"accuracy":86.4,"mcq":85,"frq":75.8,"proj":3},
-  {"name":"Aidan Wong","course":"Biology (Edmentum)","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Aidan Wong","course":"US History","progress":40,"yesterday":38.4,"accuracy":90.7,"mcq":88.6,"frq":95.2,"proj":null},
-  {"name":"Aidan Wong","course":"Language and Composition","progress":100,"yesterday":100,"accuracy":95.4,"mcq":100,"frq":100,"proj":5},
-  {"name":"Alex Mathew","course":"Psychology","progress":83.5,"yesterday":83.5,"accuracy":99.1,"mcq":100,"frq":null,"proj":null},
-  {"name":"Alex Mathew","course":"US Government","progress":20.7,"yesterday":20.7,"accuracy":92.9,"mcq":null,"frq":100,"proj":null},
-  {"name":"Alex Mathew","course":"Calculus AB (Math Academy)","progress":100,"yesterday":100,"accuracy":98.6,"mcq":null,"frq":null,"proj":null},
-  {"name":"Alex Mathew","course":"Literature and Composition","progress":1.9,"yesterday":1.9,"accuracy":87.5,"mcq":null,"frq":null,"proj":null},
-  {"name":"Alex Mathew","course":"Calculus BC (Math Academy)","progress":67.6,"yesterday":67.6,"accuracy":99.1,"mcq":null,"frq":null,"proj":null},
-  {"name":"Ali Romman","course":"Human Geography","progress":78.4,"yesterday":78.4,"accuracy":77,"mcq":77,"frq":47.5,"proj":5},
-  {"name":"Ananya Kakarlapudi","course":"Microeconomics (Edmentum)","progress":33.9,"yesterday":33.9,"accuracy":60,"mcq":null,"frq":null,"proj":null},
-  {"name":"Ananya Kakarlapudi","course":"Psychology","progress":71.2,"yesterday":69,"accuracy":97,"mcq":90.9,"frq":90.1,"proj":5},
-  {"name":"Ananya Kakarlapudi","course":"US History","progress":99.7,"yesterday":99.7,"accuracy":90.7,"mcq":92.5,"frq":100,"proj":null},
-  {"name":"Ananya Kakarlapudi","course":"Language and Composition","progress":22.2,"yesterday":16.8,"accuracy":93.5,"mcq":88.9,"frq":66.7,"proj":null},
-  {"name":"Ananya Kakarlapudi","course":"Calculus BC (Math Academy)","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Aoife Huey","course":"Psychology","progress":39.6,"yesterday":34,"accuracy":97.1,"mcq":90,"frq":95.2,"proj":null},
-  {"name":"Artemis Schiettecatte","course":"World History: Modern","progress":9.3,"yesterday":5.8,"accuracy":70,"mcq":null,"frq":100,"proj":null},
-  {"name":"Austin Lin","course":"Biology (Edmentum)","progress":23.1,"yesterday":21.3,"accuracy":85.4,"mcq":null,"frq":null,"proj":null},
-  {"name":"Austin Lin","course":"Human Geography","progress":92.2,"yesterday":89.8,"accuracy":73.1,"mcq":93.3,"frq":67,"proj":4},
-  {"name":"Austin Way","course":"Physics (Crush AP)","progress":100,"yesterday":100,"accuracy":85.3,"mcq":null,"frq":null,"proj":null},
-  {"name":"Austin Way","course":"Human Geography","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Austin Way","course":"US History","progress":98.9,"yesterday":98.9,"accuracy":81.2,"mcq":65,"frq":81.4,"proj":null},
-  {"name":"Austin Way","course":"Language and Composition","progress":23.7,"yesterday":23.7,"accuracy":66.8,"mcq":null,"frq":0,"proj":null},
-  {"name":"Austin Way","course":"Computer Science A","progress":97,"yesterday":50.7,"accuracy":60.8,"mcq":null,"frq":null,"proj":null},
-  {"name":"Benny Valles","course":"Human Geography","progress":69.6,"yesterday":67.1,"accuracy":81.4,"mcq":82,"frq":77,"proj":5},
-  {"name":"Boris Dudarev","course":"Human Geography","progress":45.2,"yesterday":42.8,"accuracy":80.1,"mcq":88.3,"frq":66.3,"proj":3},
-  {"name":"Branson Pfiester","course":"Biology (Edmentum)","progress":25.9,"yesterday":26.9,"accuracy":88,"mcq":null,"frq":null,"proj":null},
-  {"name":"Branson Pfiester","course":"Human Geography","progress":98.6,"yesterday":98.6,"accuracy":80.7,"mcq":74.3,"frq":48.1,"proj":2},
-  {"name":"Caleb Walker","course":"Environmental Science","progress":99.2,"yesterday":99.2,"accuracy":93.6,"mcq":90.6,"frq":82.2,"proj":4},
-  {"name":"Caleb Walker","course":"US History","progress":67.9,"yesterday":63.2,"accuracy":80.6,"mcq":86.1,"frq":84.3,"proj":null},
-  {"name":"Caleb Walker","course":"Language and Composition","progress":73.7,"yesterday":71.9,"accuracy":91.6,"mcq":97.4,"frq":66.7,"proj":null},
-  {"name":"Cruce Saunders IV","course":"Physics (Crush AP)","progress":65.7,"yesterday":63.4,"accuracy":81.6,"mcq":null,"frq":null,"proj":null},
-  {"name":"Cruce Saunders IV","course":"US History","progress":99.7,"yesterday":99.7,"accuracy":85.6,"mcq":74.9,"frq":89.9,"proj":4},
-  {"name":"Cruce Saunders IV","course":"Language and Composition","progress":9.4,"yesterday":9.4,"accuracy":80.9,"mcq":null,"frq":0,"proj":null},
-  {"name":"Ella Dietz","course":"World History: Modern","progress":98.1,"yesterday":98.1,"accuracy":79.2,"mcq":82.8,"frq":70.5,"proj":3},
-  {"name":"Ella Gremont","course":"Psychology","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Ella Gremont","course":"US History","progress":39.2,"yesterday":39.2,"accuracy":81.4,"mcq":89.8,"frq":76.2,"proj":null},
-  {"name":"Ella Gremont","course":"Language and Composition","progress":100,"yesterday":100,"accuracy":86.4,"mcq":81.2,"frq":100,"proj":3},
-  {"name":"Ella Gremont","course":"Chemistry (Edmentum)","progress":28.8,"yesterday":16.9,"accuracy":98.9,"mcq":null,"frq":null,"proj":null},
-  {"name":"Elle Liemandt","course":"Microeconomics (Edmentum)","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Elle Liemandt","course":"Psychology","progress":99.8,"yesterday":99.8,"accuracy":97.1,"mcq":94.3,"frq":92.1,"proj":null},
-  {"name":"Elle Liemandt","course":"US Government","progress":94.7,"yesterday":94.7,"accuracy":90,"mcq":86,"frq":97.8,"proj":null},
-  {"name":"Elle Liemandt","course":"Literature and Composition","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Elle Liemandt","course":"Calculus BC (Math Academy)","progress":17.5,"yesterday":17.5,"accuracy":98.8,"mcq":null,"frq":null,"proj":null},
-  {"name":"Emily Smith","course":"Biology (Edmentum)","progress":28.7,"yesterday":24.1,"accuracy":91.1,"mcq":null,"frq":null,"proj":null},
-  {"name":"Emily Smith","course":"Microeconomics (Edmentum)","progress":43.8,"yesterday":8.9,"accuracy":60,"mcq":null,"frq":null,"proj":null},
-  {"name":"Emily Smith","course":"US Government","progress":96.7,"yesterday":96.7,"accuracy":90.7,"mcq":88,"frq":98.3,"proj":5},
-  {"name":"Emily Smith","course":"Literature and Composition","progress":33.8,"yesterday":27.6,"accuracy":79.6,"mcq":94.4,"frq":28.6,"proj":null},
-  {"name":"Emma Cotner","course":"Biology (Edmentum)","progress":42.6,"yesterday":38.9,"accuracy":93.3,"mcq":null,"frq":null,"proj":null},
-  {"name":"Emma Cotner","course":"World History: Modern","progress":98.1,"yesterday":98.1,"accuracy":75.8,"mcq":80.7,"frq":82.2,"proj":2},
-  {"name":"Emma Cotner","course":"Computer Science A","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Erika Rigby","course":"Biology (Edmentum)","progress":14.8,"yesterday":14.8,"accuracy":91.8,"mcq":null,"frq":null,"proj":null},
-  {"name":"Erika Rigby","course":"Human Geography","progress":98.6,"yesterday":98.6,"accuracy":89.5,"mcq":88.3,"frq":92.2,"proj":4},
-  {"name":"Estella Estrada","course":"Microeconomics (Edmentum)","progress":23.2,"yesterday":17,"accuracy":73,"mcq":null,"frq":null,"proj":null},
-  {"name":"Estella Estrada","course":"US Government","progress":13.7,"yesterday":13.7,"accuracy":62.8,"mcq":null,"frq":null,"proj":null},
-  {"name":"Estella Estrada","course":"Language and Composition","progress":4.3,"yesterday":4.3,"accuracy":89.4,"mcq":null,"frq":null,"proj":null},
-  {"name":"Evan Klein","course":"Human Geography","progress":23.3,"yesterday":23.3,"accuracy":71.6,"mcq":95,"frq":null,"proj":null},
-  {"name":"Evan Klein","course":"US Government","progress":13.7,"yesterday":13.7,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Evan Klein","course":"Computer Science A","progress":100,"yesterday":90.1,"accuracy":40.4,"mcq":null,"frq":null,"proj":5},
-  {"name":"Geetesh Parelly","course":"US History","progress":15.3,"yesterday":15.3,"accuracy":90.7,"mcq":92.5,"frq":96.7,"proj":null},
-  {"name":"Geetesh Parelly","course":"Calculus AB (Math Academy)","progress":20.1,"yesterday":20.1,"accuracy":88,"mcq":null,"frq":null,"proj":null},
-  {"name":"Geetesh Parelly","course":"Language and Composition","progress":100,"yesterday":100,"accuracy":94.2,"mcq":100,"frq":100,"proj":2},
-  {"name":"Geetesh Parelly","course":"Chemistry (Edmentum)","progress":25.4,"yesterday":14.4,"accuracy":98.3,"mcq":null,"frq":null,"proj":null},
-  {"name":"Geetesh Parelly","course":"Literature and Composition","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Grady Swanson","course":"Biology (Edmentum)","progress":22.2,"yesterday":14.8,"accuracy":76.7,"mcq":null,"frq":null,"proj":null},
-  {"name":"Grady Swanson","course":"Human Geography","progress":80.6,"yesterday":80.6,"accuracy":65.9,"mcq":68.8,"frq":32.1,"proj":4},
-  {"name":"Grey Walker","course":"Human Geography","progress":17,"yesterday":17,"accuracy":67.6,"mcq":95,"frq":71.4,"proj":null},
-  {"name":"Gus Castillo","course":"Human Geography","progress":60.8,"yesterday":60.8,"accuracy":53.5,"mcq":45,"frq":25.8,"proj":2},
-  {"name":"Jackson Price","course":"Physics (Crush AP)","progress":83.8,"yesterday":87.1,"accuracy":85.1,"mcq":null,"frq":null,"proj":null},
-  {"name":"Jackson Price","course":"World History: Modern","progress":100,"yesterday":100,"accuracy":52.3,"mcq":45.6,"frq":15.2,"proj":3},
-  {"name":"Jackson Price","course":"Computer Science A","progress":69.7,"yesterday":35.2,"accuracy":56.9,"mcq":null,"frq":null,"proj":null},
-  {"name":"Jacob Kuchinsky","course":"Human Geography","progress":98.6,"yesterday":98.6,"accuracy":67.3,"mcq":62.9,"frq":34.5,"proj":5},
-  {"name":"Jacob Kuchinsky","course":"Computer Science A","progress":97,"yesterday":28.2,"accuracy":59.2,"mcq":null,"frq":null,"proj":null},
-  {"name":"Jaiden Bhakta","course":"Biology (Edmentum)","progress":21.3,"yesterday":15.7,"accuracy":93,"mcq":null,"frq":null,"proj":null},
-  {"name":"Jaiden Bhakta","course":"Human Geography","progress":32.9,"yesterday":30,"accuracy":89.2,"mcq":90,"frq":86.9,"proj":null},
-  {"name":"Jeremy Wang","course":"Physics (Crush AP)","progress":98.1,"yesterday":89.1,"accuracy":90.6,"mcq":null,"frq":null,"proj":null},
-  {"name":"Jeremy Wang","course":"Psychology","progress":18.6,"yesterday":13.6,"accuracy":97.6,"mcq":100,"frq":null,"proj":null},
-  {"name":"Jeremy Wang","course":"US History","progress":3.7,"yesterday":3.7,"accuracy":93.3,"mcq":null,"frq":null,"proj":null},
-  {"name":"Jeremy Wang","course":"Language and Composition","progress":100,"yesterday":100,"accuracy":95,"mcq":84,"frq":100,"proj":3},
-  {"name":"Jessica Owenby","course":"Human Geography","progress":74.9,"yesterday":70.3,"accuracy":88.8,"mcq":84.1,"frq":81.5,"proj":4},
-  {"name":"Ju Orloff","course":"Biology (Edmentum)","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Ju Orloff","course":"World History: Modern","progress":26,"yesterday":26,"accuracy":88.9,"mcq":92.5,"frq":88.1,"proj":null},
-  {"name":"Kavin Lingham","course":"World History: Modern","progress":92.6,"yesterday":92.6,"accuracy":71.2,"mcq":65,"frq":51.5,"proj":4},
-  {"name":"Liam Lenhardt","course":"World History: Modern","progress":37,"yesterday":37,"accuracy":63.1,"mcq":78.3,"frq":53.2,"proj":null},
-  {"name":"Liam Moore","course":"Human Geography","progress":2.1,"yesterday":2.1,"accuracy":25,"mcq":null,"frq":null,"proj":null},
-  {"name":"Luca Sanchez","course":"Human Geography","progress":42.4,"yesterday":42.4,"accuracy":74.5,"mcq":60,"frq":48,"proj":5},
-  {"name":"Maddie Price","course":"Physics (Crush AP)","progress":2.9,"yesterday":3,"accuracy":100,"mcq":null,"frq":null,"proj":null},
-  {"name":"Maddie Price","course":"US Government","progress":86.7,"yesterday":83.3,"accuracy":82,"mcq":73.8,"frq":84.7,"proj":null},
-  {"name":"Maddie Price","course":"Calculus AB (Math Academy)","progress":1.9,"yesterday":1.9,"accuracy":88.2,"mcq":null,"frq":null,"proj":null},
-  {"name":"Maddie Price","course":"Physics 1","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Maddie Price","course":"Literature and Composition","progress":2.3,"yesterday":2.3,"accuracy":80,"mcq":null,"frq":null,"proj":null},
-  {"name":"Madeleine Grams","course":"US History","progress":40,"yesterday":40,"accuracy":79.5,"mcq":81.5,"frq":74.5,"proj":null},
-  {"name":"Madeleine Grams","course":"Language and Composition","progress":100,"yesterday":100,"accuracy":92,"mcq":89.5,"frq":100,"proj":2},
-  {"name":"Malaika Negrete","course":"Psychology","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Malaika Negrete","course":"US History","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Michael Cai","course":"Biology (Edmentum)","progress":8.3,"yesterday":8.3,"accuracy":51,"mcq":null,"frq":null,"proj":null},
-  {"name":"Michael Cai","course":"World History: Modern","progress":47.9,"yesterday":47.9,"accuracy":68.3,"mcq":65,"frq":56.5,"proj":5},
-  {"name":"Mollie McDougald","course":"Psychology","progress":8.4,"yesterday":5.4,"accuracy":95.3,"mcq":100,"frq":null,"proj":null},
-  {"name":"Mollie McDougald","course":"World History: Modern","progress":1.9,"yesterday":1.9,"accuracy":100,"mcq":null,"frq":null,"proj":null},
-  {"name":"Paty Margain-Junco","course":"Psychology","progress":45.7,"yesterday":44.6,"accuracy":96.6,"mcq":90,"frq":95,"proj":null},
-  {"name":"Paty Margain-Junco","course":"US History","progress":63.9,"yesterday":63.9,"accuracy":80.6,"mcq":90,"frq":72,"proj":5},
-  {"name":"Paty Margain-Junco","course":"Language and Composition","progress":19.9,"yesterday":18.1,"accuracy":88.1,"mcq":83.3,"frq":0,"proj":null},
-  {"name":"Paty Margain-Junco","course":"Chemistry (Edmentum)","progress":36.4,"yesterday":36.4,"accuracy":98.3,"mcq":null,"frq":null,"proj":null},
-  {"name":"Reuben Runacres","course":"Psychology","progress":20.6,"yesterday":20.6,"accuracy":94.9,"mcq":97.5,"frq":60,"proj":null},
-  {"name":"Reuben Runacres","course":"Literature and Composition","progress":33.8,"yesterday":33.8,"accuracy":91.3,"mcq":94.4,"frq":71.4,"proj":null},
-  {"name":"Saeed Tarawneh","course":"Psychology","progress":19.7,"yesterday":17.5,"accuracy":92.7,"mcq":81.8,"frq":null,"proj":null},
-  {"name":"Saeed Tarawneh","course":"World History: Modern","progress":98.1,"yesterday":98.1,"accuracy":80.2,"mcq":76.7,"frq":68.3,"proj":2},
-  {"name":"Sara Beth Way","course":"Physics (Crush AP)","progress":100,"yesterday":100,"accuracy":70.4,"mcq":null,"frq":null,"proj":null},
-  {"name":"Sara Beth Way","course":"US History","progress":44.2,"yesterday":44.2,"accuracy":63,"mcq":64.2,"frq":33.9,"proj":null},
-  {"name":"Sara Beth Way","course":"Language and Composition","progress":100,"yesterday":100,"accuracy":89.8,"mcq":91.2,"frq":0,"proj":2},
-  {"name":"Sloane Price","course":"Physics (Crush AP)","progress":2.9,"yesterday":3,"accuracy":84.5,"mcq":null,"frq":null,"proj":null},
-  {"name":"Sloane Price","course":"Psychology","progress":99.8,"yesterday":99.8,"accuracy":90.2,"mcq":91.9,"frq":92.6,"proj":null},
-  {"name":"Sloane Price","course":"US Government","progress":94,"yesterday":94,"accuracy":91.4,"mcq":91,"frq":95.8,"proj":null},
-  {"name":"Sloane Price","course":"Physics 1","progress":0,"yesterday":0,"accuracy":null,"mcq":null,"frq":null,"proj":null},
-  {"name":"Sloane Price","course":"Literature and Composition","progress":1.9,"yesterday":1.9,"accuracy":88.5,"mcq":null,"frq":null,"proj":null},
-  {"name":"Sloane Price","course":"Calculus BC (Math Academy)","progress":100,"yesterday":100,"accuracy":91.7,"mcq":null,"frq":null,"proj":null},
-  {"name":"Sloka Vudumu","course":"US History","progress":31.6,"yesterday":31.6,"accuracy":86.9,"mcq":93,"frq":100,"proj":null},
-  {"name":"Sloka Vudumu","course":"Language and Composition","progress":31.1,"yesterday":30.4,"accuracy":91.3,"mcq":72.4,"frq":50,"proj":null},
-  {"name":"Sloka Vudumu","course":"Chemistry (Edmentum)","progress":94.1,"yesterday":94.1,"accuracy":91.6,"mcq":null,"frq":null,"proj":4},
-  {"name":"Stella Cole","course":"World History: Modern","progress":83.9,"yesterday":82.3,"accuracy":77.6,"mcq":79.3,"frq":60.5,"proj":3},
-  {"name":"Stella Grams","course":"World History: Modern","progress":100,"yesterday":100,"accuracy":88.4,"mcq":91.6,"frq":88.8,"proj":4},
-  {"name":"Sydney Barba","course":"Human Geography","progress":62.9,"yesterday":59.7,"accuracy":71.4,"mcq":69.1,"frq":46.5,"proj":3},
-  {"name":"Vera Li","course":"Biology (Edmentum)","progress":64.8,"yesterday":62,"accuracy":93.2,"mcq":null,"frq":null,"proj":null},
-  {"name":"Vera Li","course":"Human Geography","progress":98.6,"yesterday":98.6,"accuracy":89.1,"mcq":84.3,"frq":83.3,"proj":5},
-  {"name":"Vera Li","course":"Psychology","progress":48,"yesterday":43.1,"accuracy":97.3,"mcq":95,"frq":92.2,"proj":null},
-  {"name":"Zayen Szpitalak","course":"Human Geography","progress":58.3,"yesterday":58.3,"accuracy":74.5,"mcq":71.2,"frq":46.2,"proj":3}
+const data = [
+  {"student":"Jacob Kuchinsky","course":"AP Computer Science A with Runestone","progress":97.0,"progress_delta":68.8,"accuracy":59.2,"accuracy_delta":1.9,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Austin Way","course":"AP Computer Science A with Runestone","progress":97.0,"progress_delta":46.3,"accuracy":60.8,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Emily Smith","course":"Edmentum - AP Microeconomics","progress":43.8,"progress_delta":34.9,"accuracy":60.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Jackson Price","course":"AP Computer Science A with Runestone","progress":69.7,"progress_delta":34.5,"accuracy":56.9,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Ella Gremont","course":"Edmentum - AP Chemistry","progress":28.8,"progress_delta":11.9,"accuracy":98.9,"accuracy_delta":0.6,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Geetesh Parelly","course":"Edmentum - AP Chemistry","progress":25.4,"progress_delta":11.0,"accuracy":98.3,"accuracy_delta":-0.9,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Evan Klein","course":"AP Computer Science A with Runestone","progress":100.0,"progress_delta":9.9,"accuracy":40.4,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Jeremy Wang","course":"Crush AP - Physics","progress":98.1,"progress_delta":9.0,"accuracy":90.6,"accuracy_delta":-0.3,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Grady Swanson","course":"Edmentum - AP Biology","progress":22.2,"progress_delta":7.4,"accuracy":76.7,"accuracy_delta":3.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Emily Smith","course":"AP Literature and Composition","progress":33.8,"progress_delta":6.2,"accuracy":79.6,"accuracy_delta":-0.6,"mcq":94.4,"frq":28.6,"in_austin_way":""},
+  {"student":"Estella Estrada","course":"Edmentum - AP Microeconomics","progress":23.2,"progress_delta":6.2,"accuracy":73.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Aoife Huey","course":"AP Psychology","progress":39.6,"progress_delta":5.6,"accuracy":97.1,"accuracy_delta":0.0,"mcq":90.0,"frq":95.2,"in_austin_way":""},
+  {"student":"Jaiden Bhakta","course":"Edmentum - AP Biology","progress":21.3,"progress_delta":5.6,"accuracy":93.0,"accuracy_delta":-7.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Ananya Kakarlapudi","course":"AP Language and Composition","progress":22.2,"progress_delta":5.4,"accuracy":93.5,"accuracy_delta":-2.3,"mcq":88.9,"frq":66.7,"in_austin_way":""},
+  {"student":"Jeremy Wang","course":"AP Psychology","progress":18.6,"progress_delta":5.0,"accuracy":97.6,"accuracy_delta":-0.4,"mcq":100.0,"frq":null,"in_austin_way":""},
+  {"student":"Vera Li","course":"AP Psychology","progress":48.0,"progress_delta":4.9,"accuracy":97.3,"accuracy_delta":-0.1,"mcq":95.0,"frq":92.2,"in_austin_way":""},
+  {"student":"Caleb Walker","course":"AP United States History - PP100","progress":67.9,"progress_delta":4.7,"accuracy":80.6,"accuracy_delta":0.7,"mcq":86.1,"frq":84.3,"in_austin_way":""},
+  {"student":"Emily Smith","course":"Edmentum - AP Biology","progress":28.7,"progress_delta":4.6,"accuracy":91.1,"accuracy_delta":-1.7,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Jessica Owenby","course":"AP Human Geography - PP100","progress":74.9,"progress_delta":4.6,"accuracy":88.8,"accuracy_delta":0.0,"mcq":84.1,"frq":81.5,"in_austin_way":"Yes"},
+  {"student":"Emma Cotner","course":"Edmentum - AP Biology","progress":42.6,"progress_delta":3.7,"accuracy":93.3,"accuracy_delta":-0.4,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Artemis Schiettecatte","course":"AP World History: Modern - PP100","progress":9.3,"progress_delta":3.5,"accuracy":70.0,"accuracy_delta":-1.0,"mcq":null,"frq":100.0,"in_austin_way":""},
+  {"student":"Maddie Price","course":"AP United States Government - PP 100","progress":86.7,"progress_delta":3.4,"accuracy":82.0,"accuracy_delta":0.1,"mcq":73.8,"frq":84.7,"in_austin_way":""},
+  {"student":"Sydney Barba","course":"AP Human Geography - PP100","progress":62.9,"progress_delta":3.2,"accuracy":71.4,"accuracy_delta":1.0,"mcq":69.1,"frq":46.5,"in_austin_way":""},
+  {"student":"Adrienne Laswell","course":"AP Human Geography - PP100","progress":89.0,"progress_delta":3.1,"accuracy":80.2,"accuracy_delta":0.0,"mcq":75.8,"frq":62.0,"in_austin_way":""},
+  {"student":"Mollie McDougald","course":"AP Psychology","progress":8.4,"progress_delta":3.0,"accuracy":95.3,"accuracy_delta":-3.1,"mcq":100.0,"frq":null,"in_austin_way":""},
+  {"student":"Jaiden Bhakta","course":"AP Human Geography - PP100","progress":32.9,"progress_delta":2.9,"accuracy":89.2,"accuracy_delta":0.4,"mcq":90.0,"frq":86.9,"in_austin_way":""},
+  {"student":"Vera Li","course":"Edmentum - AP Biology","progress":64.8,"progress_delta":2.8,"accuracy":93.2,"accuracy_delta":0.3,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Benny Valles","course":"AP Human Geography - PP100","progress":69.6,"progress_delta":2.5,"accuracy":81.4,"accuracy_delta":-0.8,"mcq":82.0,"frq":77.0,"in_austin_way":""},
+  {"student":"Austin Lin","course":"AP Human Geography - PP100","progress":92.2,"progress_delta":2.4,"accuracy":73.1,"accuracy_delta":-0.1,"mcq":93.3,"frq":67.0,"in_austin_way":"Yes"},
+  {"student":"Boris Dudarev","course":"AP Human Geography - PP100","progress":45.2,"progress_delta":2.4,"accuracy":80.1,"accuracy_delta":0.6,"mcq":88.3,"frq":66.3,"in_austin_way":""},
+  {"student":"Cruce Saunders IV","course":"Crush AP - Physics","progress":65.7,"progress_delta":2.3,"accuracy":81.6,"accuracy_delta":0.1,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Ananya Kakarlapudi","course":"AP Psychology","progress":71.2,"progress_delta":2.2,"accuracy":97.0,"accuracy_delta":0.0,"mcq":90.9,"frq":90.1,"in_austin_way":""},
+  {"student":"Saeed Tarawneh","course":"AP Psychology","progress":19.7,"progress_delta":2.2,"accuracy":92.7,"accuracy_delta":0.5,"mcq":81.8,"frq":null,"in_austin_way":""},
+  {"student":"Austin Lin","course":"Edmentum - AP Biology","progress":23.1,"progress_delta":1.8,"accuracy":85.4,"accuracy_delta":5.3,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Caleb Walker","course":"AP Language and Composition","progress":73.7,"progress_delta":1.8,"accuracy":91.6,"accuracy_delta":0.2,"mcq":97.4,"frq":66.7,"in_austin_way":""},
+  {"student":"Paty Margain-Junco","course":"AP Language and Composition","progress":19.9,"progress_delta":1.8,"accuracy":88.1,"accuracy_delta":0.7,"mcq":83.3,"frq":0.0,"in_austin_way":""},
+  {"student":"Aidan Wong","course":"AP United States History - PP100","progress":40.0,"progress_delta":1.6,"accuracy":90.7,"accuracy_delta":0.2,"mcq":88.6,"frq":95.2,"in_austin_way":""},
+  {"student":"Stella Cole","course":"AP World History: Modern - PP100","progress":83.9,"progress_delta":1.6,"accuracy":77.6,"accuracy_delta":0.0,"mcq":79.3,"frq":60.5,"in_austin_way":""},
+  {"student":"Paty Margain-Junco","course":"AP Psychology","progress":45.7,"progress_delta":1.1,"accuracy":96.6,"accuracy_delta":0.1,"mcq":90.0,"frq":95.0,"in_austin_way":""},
+  {"student":"Sloka Vudumu","course":"AP Language and Composition","progress":31.1,"progress_delta":0.7,"accuracy":91.3,"accuracy_delta":0.0,"mcq":72.4,"frq":50.0,"in_austin_way":""},
+  {"student":"Aheli Shah","course":"AP Human Geography - PP100","progress":89.0,"progress_delta":0.0,"accuracy":86.4,"accuracy_delta":0.0,"mcq":85.0,"frq":75.8,"in_austin_way":"Yes"},
+  {"student":"Aidan Wong","course":"Edmentum - AP Biology","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Aidan Wong","course":"AP Language and Composition","progress":100.0,"progress_delta":0.0,"accuracy":95.4,"accuracy_delta":0.0,"mcq":100.0,"frq":100.0,"in_austin_way":""},
+  {"student":"Alex Mathew","course":"AP Psychology","progress":83.5,"progress_delta":0.0,"accuracy":99.1,"accuracy_delta":0.0,"mcq":100.0,"frq":null,"in_austin_way":""},
+  {"student":"Alex Mathew","course":"AP United States Government - PP 100","progress":20.7,"progress_delta":0.0,"accuracy":92.9,"accuracy_delta":0.0,"mcq":null,"frq":100.0,"in_austin_way":""},
+  {"student":"Alex Mathew","course":"Math Academy - AP Calculus AB","progress":100.0,"progress_delta":0.0,"accuracy":98.6,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Alex Mathew","course":"AP Literature and Composition","progress":1.9,"progress_delta":0.0,"accuracy":87.5,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Alex Mathew","course":"Math Academy - AP Calculus BC","progress":67.6,"progress_delta":0.0,"accuracy":99.1,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Ali Romman","course":"AP Human Geography - PP100","progress":78.4,"progress_delta":0.0,"accuracy":77.0,"accuracy_delta":0.0,"mcq":77.0,"frq":47.5,"in_austin_way":""},
+  {"student":"Ananya Kakarlapudi","course":"Edmentum - AP Microeconomics","progress":33.9,"progress_delta":0.0,"accuracy":60.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Ananya Kakarlapudi","course":"AP United States History - PP100","progress":99.7,"progress_delta":0.0,"accuracy":90.7,"accuracy_delta":0.0,"mcq":92.5,"frq":100.0,"in_austin_way":"Yes"},
+  {"student":"Ananya Kakarlapudi","course":"Math Academy - AP Calculus BC","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Austin Way","course":"Crush AP - Physics","progress":100.0,"progress_delta":0.0,"accuracy":85.3,"accuracy_delta":-0.1,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Austin Way","course":"AP Human Geography - PP100","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Austin Way","course":"AP United States History - PP100","progress":98.9,"progress_delta":0.0,"accuracy":81.2,"accuracy_delta":0.0,"mcq":65.0,"frq":81.4,"in_austin_way":""},
+  {"student":"Austin Way","course":"AP Language and Composition","progress":23.7,"progress_delta":0.0,"accuracy":66.8,"accuracy_delta":0.0,"mcq":null,"frq":0.0,"in_austin_way":""},
+  {"student":"Branson Pfiester","course":"AP Human Geography - PP100","progress":98.6,"progress_delta":0.0,"accuracy":80.7,"accuracy_delta":0.0,"mcq":74.3,"frq":48.1,"in_austin_way":""},
+  {"student":"Caleb Walker","course":"AP Environmental Science","progress":99.2,"progress_delta":0.0,"accuracy":93.6,"accuracy_delta":0.0,"mcq":90.6,"frq":82.2,"in_austin_way":""},
+  {"student":"Cruce Saunders IV","course":"AP United States History - PP100","progress":99.7,"progress_delta":0.0,"accuracy":85.6,"accuracy_delta":0.0,"mcq":74.9,"frq":89.9,"in_austin_way":"Yes"},
+  {"student":"Cruce Saunders IV","course":"AP Language and Composition","progress":9.4,"progress_delta":0.0,"accuracy":80.9,"accuracy_delta":0.0,"mcq":null,"frq":0.0,"in_austin_way":""},
+  {"student":"Ella Dietz","course":"AP World History: Modern - PP100","progress":98.1,"progress_delta":0.0,"accuracy":79.2,"accuracy_delta":0.0,"mcq":82.8,"frq":70.5,"in_austin_way":""},
+  {"student":"Ella Gremont","course":"AP Psychology","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Ella Gremont","course":"AP United States History - PP100","progress":39.2,"progress_delta":0.0,"accuracy":81.4,"accuracy_delta":0.0,"mcq":89.8,"frq":76.2,"in_austin_way":"Yes"},
+  {"student":"Ella Gremont","course":"AP Language and Composition","progress":100.0,"progress_delta":0.0,"accuracy":86.4,"accuracy_delta":0.0,"mcq":81.2,"frq":100.0,"in_austin_way":""},
+  {"student":"Elle Liemandt","course":"Edmentum - AP Microeconomics","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Elle Liemandt","course":"AP Psychology","progress":99.8,"progress_delta":0.0,"accuracy":97.1,"accuracy_delta":0.0,"mcq":94.3,"frq":92.1,"in_austin_way":""},
+  {"student":"Elle Liemandt","course":"AP United States Government - PP 100","progress":94.7,"progress_delta":0.0,"accuracy":90.0,"accuracy_delta":0.0,"mcq":86.0,"frq":97.8,"in_austin_way":""},
+  {"student":"Elle Liemandt","course":"AP Literature and Composition","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Elle Liemandt","course":"Math Academy - AP Calculus BC","progress":17.5,"progress_delta":0.0,"accuracy":98.8,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Emily Smith","course":"AP United States Government - PP 100","progress":96.7,"progress_delta":0.0,"accuracy":90.7,"accuracy_delta":0.0,"mcq":88.0,"frq":98.3,"in_austin_way":""},
+  {"student":"Emma Cotner","course":"AP World History: Modern - PP100","progress":98.1,"progress_delta":0.0,"accuracy":75.8,"accuracy_delta":0.0,"mcq":80.7,"frq":82.2,"in_austin_way":"Yes"},
+  {"student":"Emma Cotner","course":"AP Computer Science A with Runestone","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Erika Rigby","course":"Edmentum - AP Biology","progress":14.8,"progress_delta":0.0,"accuracy":91.8,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Erika Rigby","course":"AP Human Geography - PP100","progress":98.6,"progress_delta":0.0,"accuracy":89.5,"accuracy_delta":0.0,"mcq":88.3,"frq":92.2,"in_austin_way":"Yes"},
+  {"student":"Estella Estrada","course":"AP United States Government - PP 100","progress":13.7,"progress_delta":0.0,"accuracy":62.8,"accuracy_delta":7.1,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Estella Estrada","course":"AP Language and Composition","progress":4.3,"progress_delta":0.0,"accuracy":89.4,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Evan Klein","course":"AP Human Geography - PP100","progress":23.3,"progress_delta":0.0,"accuracy":71.6,"accuracy_delta":0.0,"mcq":95.0,"frq":null,"in_austin_way":"Yes"},
+  {"student":"Evan Klein","course":"AP United States Government - PP 100","progress":13.7,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Geetesh Parelly","course":"AP United States History - PP100","progress":15.3,"progress_delta":0.0,"accuracy":90.7,"accuracy_delta":0.0,"mcq":92.5,"frq":96.7,"in_austin_way":"Yes"},
+  {"student":"Geetesh Parelly","course":"Math Academy - AP Calculus AB","progress":20.1,"progress_delta":0.0,"accuracy":88.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Geetesh Parelly","course":"AP Language and Composition","progress":100.0,"progress_delta":0.0,"accuracy":94.2,"accuracy_delta":0.0,"mcq":100.0,"frq":100.0,"in_austin_way":""},
+  {"student":"Geetesh Parelly","course":"AP Literature and Composition","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Grady Swanson","course":"AP Human Geography - PP100","progress":80.6,"progress_delta":0.0,"accuracy":65.9,"accuracy_delta":0.0,"mcq":68.8,"frq":32.1,"in_austin_way":"Yes"},
+  {"student":"Grey Walker","course":"AP Human Geography - PP100","progress":17.0,"progress_delta":0.0,"accuracy":67.6,"accuracy_delta":0.0,"mcq":95.0,"frq":71.4,"in_austin_way":"Yes"},
+  {"student":"Gus Castillo","course":"AP Human Geography - PP100","progress":60.8,"progress_delta":0.0,"accuracy":53.5,"accuracy_delta":0.0,"mcq":45.0,"frq":25.8,"in_austin_way":"Yes"},
+  {"student":"Jackson Price","course":"AP World History: Modern - PP100","progress":100.0,"progress_delta":0.0,"accuracy":52.3,"accuracy_delta":0.0,"mcq":45.6,"frq":15.2,"in_austin_way":""},
+  {"student":"Jacob Kuchinsky","course":"AP Human Geography - PP100","progress":98.6,"progress_delta":0.0,"accuracy":67.3,"accuracy_delta":0.0,"mcq":62.9,"frq":34.5,"in_austin_way":""},
+  {"student":"Jeremy Wang","course":"AP United States History - PP100","progress":3.7,"progress_delta":0.0,"accuracy":93.3,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Jeremy Wang","course":"AP Language and Composition","progress":100.0,"progress_delta":0.0,"accuracy":95.0,"accuracy_delta":0.0,"mcq":84.0,"frq":100.0,"in_austin_way":""},
+  {"student":"Ju Orloff","course":"Edmentum - AP Biology","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Ju Orloff","course":"AP World History: Modern - PP100","progress":26.0,"progress_delta":0.0,"accuracy":88.9,"accuracy_delta":0.0,"mcq":92.5,"frq":88.1,"in_austin_way":""},
+  {"student":"Kavin Lingham","course":"AP World History: Modern - PP100","progress":92.6,"progress_delta":0.0,"accuracy":71.2,"accuracy_delta":0.0,"mcq":65.0,"frq":51.5,"in_austin_way":""},
+  {"student":"Liam Lenhardt","course":"AP World History: Modern - PP100","progress":37.0,"progress_delta":0.0,"accuracy":63.1,"accuracy_delta":0.0,"mcq":78.3,"frq":53.2,"in_austin_way":""},
+  {"student":"Liam Moore","course":"AP Human Geography - PP100","progress":2.1,"progress_delta":0.0,"accuracy":25.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Luca Sanchez","course":"AP Human Geography - PP100","progress":42.4,"progress_delta":0.0,"accuracy":74.5,"accuracy_delta":2.1,"mcq":60.0,"frq":48.0,"in_austin_way":""},
+  {"student":"Maddie Price","course":"Math Academy - AP Calculus AB","progress":1.9,"progress_delta":0.0,"accuracy":88.2,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Maddie Price","course":"AP Physics 1 - v2 - PP 100","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Maddie Price","course":"AP Literature and Composition","progress":2.3,"progress_delta":0.0,"accuracy":80.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Madeleine Grams","course":"AP United States History - PP100","progress":40.0,"progress_delta":0.0,"accuracy":79.5,"accuracy_delta":0.0,"mcq":81.5,"frq":74.5,"in_austin_way":"Yes"},
+  {"student":"Madeleine Grams","course":"AP Language and Composition","progress":100.0,"progress_delta":0.0,"accuracy":92.0,"accuracy_delta":0.0,"mcq":89.5,"frq":100.0,"in_austin_way":""},
+  {"student":"Malaika Negrete","course":"AP Psychology","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Malaika Negrete","course":"AP United States History - PP100","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Michael Cai","course":"Edmentum - AP Biology","progress":8.3,"progress_delta":0.0,"accuracy":51.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Michael Cai","course":"AP World History: Modern - PP100","progress":47.9,"progress_delta":0.0,"accuracy":68.3,"accuracy_delta":0.0,"mcq":65.0,"frq":56.5,"in_austin_way":"Yes"},
+  {"student":"Mollie McDougald","course":"AP World History: Modern - PP100","progress":1.9,"progress_delta":0.0,"accuracy":100.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Paty Margain-Junco","course":"AP United States History - PP100","progress":63.9,"progress_delta":0.0,"accuracy":80.6,"accuracy_delta":0.0,"mcq":90.0,"frq":72.0,"in_austin_way":"Yes"},
+  {"student":"Paty Margain-Junco","course":"Edmentum - AP Chemistry","progress":36.4,"progress_delta":0.0,"accuracy":98.3,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Reuben Runacres","course":"AP Psychology","progress":20.6,"progress_delta":0.0,"accuracy":94.9,"accuracy_delta":0.0,"mcq":97.5,"frq":60.0,"in_austin_way":""},
+  {"student":"Reuben Runacres","course":"AP Literature and Composition","progress":33.8,"progress_delta":0.0,"accuracy":91.3,"accuracy_delta":0.0,"mcq":94.4,"frq":71.4,"in_austin_way":""},
+  {"student":"Saeed Tarawneh","course":"AP World History: Modern - PP100","progress":98.1,"progress_delta":0.0,"accuracy":80.2,"accuracy_delta":0.0,"mcq":76.7,"frq":68.3,"in_austin_way":""},
+  {"student":"Sara Beth Way","course":"Crush AP - Physics","progress":100.0,"progress_delta":0.0,"accuracy":70.4,"accuracy_delta":0.2,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Sara Beth Way","course":"AP United States History - PP100","progress":44.2,"progress_delta":0.0,"accuracy":63.0,"accuracy_delta":0.0,"mcq":64.2,"frq":33.9,"in_austin_way":"Yes"},
+  {"student":"Sara Beth Way","course":"AP Language and Composition","progress":100.0,"progress_delta":0.0,"accuracy":89.8,"accuracy_delta":0.0,"mcq":91.2,"frq":0.0,"in_austin_way":""},
+  {"student":"Sloane Price","course":"AP Psychology","progress":99.8,"progress_delta":0.0,"accuracy":90.2,"accuracy_delta":0.0,"mcq":91.9,"frq":92.6,"in_austin_way":""},
+  {"student":"Sloane Price","course":"AP United States Government - PP 100","progress":94.0,"progress_delta":0.0,"accuracy":91.4,"accuracy_delta":0.0,"mcq":91.0,"frq":95.8,"in_austin_way":""},
+  {"student":"Sloane Price","course":"AP Physics 1 - v2 - PP 100","progress":0.0,"progress_delta":0.0,"accuracy":null,"accuracy_delta":null,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Sloane Price","course":"AP Literature and Composition","progress":1.9,"progress_delta":0.0,"accuracy":88.5,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Sloane Price","course":"Math Academy - AP Calculus BC","progress":100.0,"progress_delta":0.0,"accuracy":91.7,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Sloka Vudumu","course":"AP United States History - PP100","progress":31.6,"progress_delta":0.0,"accuracy":86.9,"accuracy_delta":0.0,"mcq":93.0,"frq":100.0,"in_austin_way":"Yes"},
+  {"student":"Sloka Vudumu","course":"Edmentum - AP Chemistry","progress":94.1,"progress_delta":0.0,"accuracy":91.6,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Stella Grams","course":"AP World History: Modern - PP100","progress":100.0,"progress_delta":0.0,"accuracy":88.4,"accuracy_delta":0.0,"mcq":91.6,"frq":88.8,"in_austin_way":"Yes"},
+  {"student":"Vera Li","course":"AP Human Geography - PP100","progress":98.6,"progress_delta":0.0,"accuracy":89.1,"accuracy_delta":0.0,"mcq":84.3,"frq":83.3,"in_austin_way":"Yes"},
+  {"student":"Zayen Szpitalak","course":"AP Human Geography - PP100","progress":58.3,"progress_delta":0.0,"accuracy":74.5,"accuracy_delta":0.0,"mcq":71.2,"frq":46.2,"in_austin_way":"Yes"},
+  {"student":"Maddie Price","course":"Crush AP - Physics","progress":2.9,"progress_delta":-0.1,"accuracy":100.0,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Sloane Price","course":"Crush AP - Physics","progress":2.9,"progress_delta":-0.1,"accuracy":84.5,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Branson Pfiester","course":"Edmentum - AP Biology","progress":25.9,"progress_delta":-1.0,"accuracy":88.0,"accuracy_delta":-2.1,"mcq":null,"frq":null,"in_austin_way":""},
+  {"student":"Jackson Price","course":"Crush AP - Physics","progress":83.8,"progress_delta":-3.3,"accuracy":85.1,"accuracy_delta":0.0,"mcq":null,"frq":null,"in_austin_way":""}
 ];
 
-let data = RAW_DATA;
-let courseFilter = 'All';
-let studentFilter = 'All';
-let projFilter = 'All';
-let changeFilter = 'All';
-let sortField = 'delta';
-let sortDir = 'desc';
+let currentFilter = 'all';
+let currentSort = { col: 'progress_delta', dir: 'desc' };
+let courseFilter = '';
 
-const courses = ['All', ...new Set(data.map(d => d.course))].sort();
-const students = ['All', ...new Set(data.map(d => d.name))].sort();
-
-function getStatusClass(pct) {
-  if (pct >= 90) return 'complete';
-  if (pct >= 50) return 'ontrack';
-  if (pct >= 25) return 'progress';
-  if (pct >= 10) return 'behind';
-  return 'atrisk';
+function getScoreClass(val) {
+  if (val === null || val === undefined) return '';
+  if (val >= 80) return 'high';
+  if (val >= 65) return 'mid';
+  return 'low';
 }
 
-function getScoreClass(score) {
-  if (score === null) return 'none';
-  if (score >= 90) return 'high';
-  if (score >= 80) return 'good';
-  if (score >= 70) return 'mid';
-  if (score >= 60) return 'low';
-  return 'concern';
+function formatDelta(val) {
+  if (val === null || val === undefined) return '<span class="delta neutral">—</span>';
+  const sign = val > 0 ? '+' : '';
+  const cls = val > 0 ? 'positive' : val < 0 ? 'negative' : 'neutral';
+  return `<span class="delta ${cls}">${sign}${val.toFixed(1)}</span>`;
 }
 
 function formatScore(val) {
-  return val !== null ? val.toFixed(1) : '—';
+  if (val === null || val === undefined) return '—';
+  return val.toFixed(1);
 }
 
-function formatDelta(d) {
-  if (d === 0) return '';
-  const sign = d > 0 ? '+' : '';
-  return sign + d.toFixed(1) + '%';
-}
-
-function render() {
-  document.getElementById('date-display').textContent = 'Thursday, March 19, 2026';
-
-  // Calculate deltas
-  data.forEach(d => { d.delta = Math.round((d.progress - d.yesterday) * 10) / 10; });
-
-  let filtered = data;
-  if (courseFilter !== 'All') filtered = filtered.filter(d => d.course === courseFilter);
-  if (studentFilter !== 'All') filtered = filtered.filter(d => d.name === studentFilter);
-  if (projFilter === 'Has Score') filtered = filtered.filter(d => d.proj !== null);
-  if (projFilter === '5') filtered = filtered.filter(d => d.proj === 5);
-  if (projFilter === '4') filtered = filtered.filter(d => d.proj === 4);
-  if (projFilter === '3') filtered = filtered.filter(d => d.proj === 3);
-  if (projFilter === '1-2') filtered = filtered.filter(d => d.proj === 1 || d.proj === 2);
-  if (changeFilter === 'Changed') filtered = filtered.filter(d => d.delta !== 0);
-  if (changeFilter === 'Big movers') filtered = filtered.filter(d => d.delta >= 5);
-
-  filtered = filtered.slice().sort((a, b) => {
-    let av = a[sortField];
-    let bv = b[sortField];
-    if (av === null) av = -999;
-    if (bv === null) bv = -999;
-    if (typeof av === 'string') { av = av.toLowerCase(); bv = bv.toLowerCase(); }
-    if (av < bv) return sortDir === 'asc' ? -1 : 1;
-    if (av > bv) return sortDir === 'asc' ? 1 : -1;
-    return 0;
-  });
-
-  // Metrics
-  const total = filtered.length;
-  const avgProgress = total > 0 ? (filtered.reduce((s, d) => s + (d.progress || 0), 0) / total).toFixed(1) : 0;
-  const totalDelta = filtered.reduce((s, d) => s + d.delta, 0).toFixed(1);
-  const changed = filtered.filter(d => d.delta !== 0).length;
-  const bigMovers = filtered.filter(d => d.delta >= 5).length;
-  const withProj = filtered.filter(d => d.proj !== null);
-  const avgProj = withProj.length > 0 ? (withProj.reduce((s, d) => s + d.proj, 0) / withProj.length).toFixed(1) : '—';
-  const proj5 = filtered.filter(d => d.proj === 5).length;
-  const proj12 = filtered.filter(d => d.proj === 1 || d.proj === 2).length;
-
-  document.getElementById('metrics').innerHTML = `
-    <div class="metric-card"><div class="metric-label">Enrollments</div><div class="metric-value">${total}</div></div>
-    <div class="metric-card"><div class="metric-label">Avg Progress</div><div class="metric-value">${avgProgress}%</div></div>
-    <div class="metric-card"><div class="metric-label">Total Δ Today</div><div class="metric-value delta-up">+${totalDelta}%</div></div>
-    <div class="metric-card"><div class="metric-label">Changed Today</div><div class="metric-value">${changed}</div></div>
-    <div class="metric-card"><div class="metric-label">Big Movers (≥5%)</div><div class="metric-value" style="color:#059669">${bigMovers}</div></div>
-    <div class="metric-card"><div class="metric-label">Avg Proj Score</div><div class="metric-value">${avgProj}</div></div>
-    <div class="metric-card"><div class="metric-label">Proj 5</div><div class="metric-value" style="color:#059669">${proj5}</div></div>
-    <div class="metric-card"><div class="metric-label">Proj 1-2 (At Risk)</div><div class="metric-value" style="color:#dc2626">${proj12}</div></div>
-  `;
-
-  // Filters
-  document.getElementById('filters').innerHTML = `
-    <select id="course-select">${courses.map(c => `<option value="${c}" ${c === courseFilter ? 'selected' : ''}>${c === 'All' ? 'All courses' : c}</option>`).join('')}</select>
-    <select id="student-select">${students.map(s => `<option value="${s}" ${s === studentFilter ? 'selected' : ''}>${s === 'All' ? 'All students' : s}</option>`).join('')}</select>
-    <select id="change-select">
-      <option value="All" ${changeFilter === 'All' ? 'selected' : ''}>All progress</option>
-      <option value="Changed" ${changeFilter === 'Changed' ? 'selected' : ''}>Changed today</option>
-      <option value="Big movers" ${changeFilter === 'Big movers' ? 'selected' : ''}>Big movers (≥5%)</option>
-    </select>
-    <select id="proj-select">
-      <option value="All" ${projFilter === 'All' ? 'selected' : ''}>All proj scores</option>
-      <option value="Has Score" ${projFilter === 'Has Score' ? 'selected' : ''}>Has proj score</option>
-      <option value="5" ${projFilter === '5' ? 'selected' : ''}>Proj 5</option>
-      <option value="1-2" ${projFilter === '1-2' ? 'selected' : ''}>Proj 1-2 (at risk)</option>
-    </select>
-    <button id="reset-btn">Reset</button>
-  `;
-
-  document.getElementById('course-select').onchange = e => { courseFilter = e.target.value; render(); };
-  document.getElementById('student-select').onchange = e => { studentFilter = e.target.value; render(); };
-  document.getElementById('change-select').onchange = e => { changeFilter = e.target.value; render(); };
-  document.getElementById('proj-select').onchange = e => { projFilter = e.target.value; render(); };
-  document.getElementById('reset-btn').onclick = () => { courseFilter = 'All'; studentFilter = 'All'; projFilter = 'All'; changeFilter = 'All'; sortField = 'delta'; sortDir = 'desc'; render(); };
-
-  // Table head
-  const sortIcon = field => sortField === field ? (sortDir === 'asc' ? ' ↑' : ' ↓') : '';
-  document.getElementById('table-head').innerHTML = `
-    <tr>
-      <th data-sort="name" class="${sortField === 'name' ? 'sorted' : ''}">Student${sortIcon('name')}</th>
-      <th data-sort="course" class="${sortField === 'course' ? 'sorted' : ''}">Course${sortIcon('course')}</th>
-      <th data-sort="progress" class="${sortField === 'progress' ? 'sorted' : ''}">Progress${sortIcon('progress')}</th>
-      <th data-sort="delta" class="${sortField === 'delta' ? 'sorted' : ''}">Δ${sortIcon('delta')}</th>
-      <th data-sort="proj" class="${sortField === 'proj' ? 'sorted' : ''}">Proj${sortIcon('proj')}</th>
-      <th data-sort="accuracy" class="${sortField === 'accuracy' ? 'sorted' : ''}">Accuracy${sortIcon('accuracy')}</th>
-      <th data-sort="mcq" class="${sortField === 'mcq' ? 'sorted' : ''}">MCQ${sortIcon('mcq')}</th>
-      <th data-sort="frq" class="${sortField === 'frq' ? 'sorted' : ''}">FRQ${sortIcon('frq')}</th>
-    </tr>
-  `;
-
-  document.querySelectorAll('#table-head th').forEach(th => {
-    if (!th.dataset.sort) return;
-    th.onclick = () => {
-      const field = th.dataset.sort;
-      if (sortField === field) {
-        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-      } else {
-        sortField = field;
-        sortDir = field === 'name' || field === 'course' ? 'asc' : 'desc';
-      }
-      render();
-    };
-  });
-
-  // Table body
-  if (filtered.length === 0) {
-    document.getElementById('table-body').innerHTML = '';
-    document.getElementById('empty-state').style.display = 'block';
-  } else {
-    document.getElementById('empty-state').style.display = 'none';
-    document.getElementById('table-body').innerHTML = filtered.map(row => {
-      const status = getStatusClass(row.progress);
-      const pctDisplay = Math.min(100, Math.max(0, row.progress));
-      const projClass = row.proj !== null ? `proj-${row.proj}` : 'proj-none';
-      const deltaClass = row.delta > 0 ? 'delta-up' : row.delta < 0 ? 'delta-down' : 'delta-none';
-      const bigMover = row.delta >= 5;
-      return `
-        <tr class="${bigMover ? 'big-mover' : ''}">
-          <td class="student-name">${row.name}</td>
-          <td class="course" title="${row.course}">${row.course}</td>
-          <td class="progress-cell">
-            <div class="progress-bar">
-              <div class="progress-track"><div class="progress-fill fill-${status}" style="width:${pctDisplay}%"></div></div>
-              <span class="progress-value score-${status}">${row.progress.toFixed(1)}%</span>
-            </div>
-          </td>
-          <td class="num"><span class="delta ${deltaClass}">${formatDelta(row.delta)}</span></td>
-          <td class="num"><span class="proj-badge ${projClass}">${row.proj !== null ? row.proj : '—'}</span></td>
-          <td class="num"><span class="score score-${getScoreClass(row.accuracy)}">${formatScore(row.accuracy)}</span></td>
-          <td class="num"><span class="score score-${getScoreClass(row.mcq)}">${formatScore(row.mcq)}</span></td>
-          <td class="num"><span class="score score-${getScoreClass(row.frq)}">${formatScore(row.frq)}</span></td>
-        </tr>
-      `;
-    }).join('');
+function filterData(d) {
+  let filtered = [...d];
+  
+  if (courseFilter) {
+    filtered = filtered.filter(r => r.course === courseFilter);
   }
+  
+  switch(currentFilter) {
+    case 'movers':
+      filtered = filtered.filter(r => r.progress_delta && r.progress_delta >= 5);
+      break;
+    case 'accuracy-up':
+      filtered = filtered.filter(r => r.accuracy_delta && r.accuracy_delta > 0);
+      break;
+    case 'accuracy-down':
+      filtered = filtered.filter(r => r.accuracy_delta && r.accuracy_delta < 0);
+      break;
+    case 'complete':
+      filtered = filtered.filter(r => r.progress === 100);
+      break;
+  }
+  
+  return filtered;
 }
 
-render();
+function sortData(d) {
+  return d.sort((a, b) => {
+    let aVal = a[currentSort.col];
+    let bVal = b[currentSort.col];
+    if (aVal === null || aVal === undefined) aVal = currentSort.dir === 'desc' ? -Infinity : Infinity;
+    if (bVal === null || bVal === undefined) bVal = currentSort.dir === 'desc' ? -Infinity : Infinity;
+    if (typeof aVal === 'string') return currentSort.dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+    return currentSort.dir === 'asc' ? aVal - bVal : bVal - aVal;
+  });
+}
+
+function renderMetrics() {
+  const totalEnrollments = data.length;
+  const totalProgress = data.filter(r => r.progress_delta && r.progress_delta > 0).length;
+  const bigMovers = data.filter(r => r.progress_delta && r.progress_delta >= 5).length;
+  const accuracyUp = data.filter(r => r.accuracy_delta && r.accuracy_delta > 0).length;
+  const accuracyDown = data.filter(r => r.accuracy_delta && r.accuracy_delta < 0).length;
+  const complete = data.filter(r => r.progress === 100).length;
+  
+  document.getElementById('metrics').innerHTML = `
+    <div class="metric"><div class="metric-value">${totalEnrollments}</div><div class="metric-label">Total Enrollments</div></div>
+    <div class="metric"><div class="metric-value blue">${totalProgress}</div><div class="metric-label">Made Progress Today</div></div>
+    <div class="metric"><div class="metric-value green">${bigMovers}</div><div class="metric-label">Big Movers (≥5%)</div></div>
+    <div class="metric"><div class="metric-value green">${accuracyUp}</div><div class="metric-label">Accuracy Up</div></div>
+    <div class="metric"><div class="metric-value red">${accuracyDown}</div><div class="metric-label">Accuracy Down</div></div>
+    <div class="metric"><div class="metric-value">${complete}</div><div class="metric-label">100% Complete</div></div>
+  `;
+}
+
+function renderCourseFilter() {
+  const courses = [...new Set(data.map(r => r.course))].sort();
+  const sel = document.getElementById('courseFilter');
+  sel.innerHTML = '<option value="">All Courses</option>' + courses.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+function renderTable() {
+  const filtered = sortData(filterData(data));
+  const tbody = document.getElementById('tableBody');
+  
+  tbody.innerHTML = filtered.map(row => {
+    const isMover = row.progress_delta && row.progress_delta >= 5;
+    const accDrop = row.accuracy_delta && row.accuracy_delta <= -2;
+    let rowClass = '';
+    if (isMover) rowClass = 'big-mover';
+    else if (accDrop) rowClass = 'accuracy-drop';
+    
+    const progressFill = row.progress || 0;
+    const progressClass = progressFill >= 80 ? 'high' : progressFill >= 50 ? 'mid' : 'low';
+    
+    return `
+      <tr class="${rowClass}">
+        <td>${row.student}${row.progress === 100 ? '<span class="badge complete">✓</span>' : ''}</td>
+        <td>${row.course}</td>
+        <td><div class="progress-bar"><div class="progress-fill ${progressClass}" style="width:${progressFill}%"></div></div>${formatScore(row.progress)}%</td>
+        <td>${formatDelta(row.progress_delta)}</td>
+        <td><span class="score score-${getScoreClass(row.accuracy)}">${formatScore(row.accuracy)}</span></td>
+        <td>${formatDelta(row.accuracy_delta)}</td>
+        <td>${row.mcq !== null ? formatScore(row.mcq) : '—'}</td>
+        <td>${row.frq !== null ? formatScore(row.frq) : '—'}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// Event listeners
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderTable();
+  });
+});
+
+document.getElementById('courseFilter').addEventListener('change', (e) => {
+  courseFilter = e.target.value;
+  renderTable();
+});
+
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.sort;
+    if (currentSort.col === col) {
+      currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSort.col = col;
+      currentSort.dir = 'desc';
+    }
+    renderTable();
+  });
+});
+
+// Initial render
+renderMetrics();
+renderCourseFilter();
+renderTable();
 </script>
 </body>
 </html>
